@@ -28,8 +28,8 @@ public class UrlMapping {
     @Column(name="updated_at",nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(name="access_count")
-    private int accessCount;
+    @Column(name="access_count", nullable = false, columnDefinition = "int default 0")
+    private Integer accessCount;
 
     public UrlMapping(){
         this.createdAt = LocalDateTime.now();

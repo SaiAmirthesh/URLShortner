@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -43,27 +44,29 @@ public class UrlService {
             if(attempt>10){
                 throw new RuntimeException("Failed to Generate a unique short code within 10 attempts");
             }
-        }while(urlRepository.existsByshortCode(shortCode));
+        }while(urlRepository.existsByShortCode(shortCode));
         return shortCode;
     }
 
+    @Transactional
     public Optional<UrlMapping> getOriginalUrl(String shortCode){
-        Optional<UrlMapping> urlMapping = urlRepository.findByshortCode(shortCode);
+        Optional<UrlMapping> urlMapping = urlRepository.findByShortCode(shortCode);
         if(urlMapping.isPresent()){
             UrlMapping mapping = urlMapping.get();
-            mapping.setAccessCount(mapping.getAccessCount()+1);
+            int currentCount = (mapping.getAccessCount() != null) ? mapping.getAccessCount() : 0;
+            mapping.setAccessCount(currentCount + 1);
             return Optional.of(urlRepository.save(mapping));
         }
         return Optional.empty();
     }
 
     public Optional<UrlMapping> getUrlStats(String shortCode){
-        return urlRepository.findByshortCode(shortCode);
+        return urlRepository.findByShortCode(shortCode);
     }
 
     @Transactional
     public Optional<UrlMapping> updateShortUrl(String shortCode ,String newUrl){
-        Optional<UrlMapping> existingUrl = urlRepository.findByshortCode(shortCode);
+        Optional<UrlMapping> existingUrl = urlRepository.findByShortCode(shortCode);
         if(existingUrl.isPresent()){
             UrlMapping mapping = existingUrl.get();
             mapping.setUrl(newUrl);
@@ -74,11 +77,16 @@ public class UrlService {
     }
 
 
+    @Transactional
     public boolean deleteUrl(String shortCode){
-        if(urlRepository.existsByshortCode(shortCode)){
-            urlRepository.deleteByshortCode(shortCode);
+        if(urlRepository.existsByShortCode(shortCode)){
+            urlRepository.deleteByShortCode(shortCode);
             return true;
         }
         return false;
+    }
+
+    public List<UrlMapping> getAllUrls() {
+        return urlRepository.findAll();
     }
 }

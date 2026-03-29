@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface UrlRepository extends JpaRepository<UrlMapping,Long> {
-    Optional<UrlMapping> findByshortCode(String shortCode);
+    Optional<UrlMapping> findByShortCode(String shortCode);
 
-    boolean existsByshortCode(String shortCode);
+    boolean existsByShortCode(String shortCode);
 
-    void deleteByshortCode(String shortCode);
+    void deleteByShortCode(String shortCode);
 }

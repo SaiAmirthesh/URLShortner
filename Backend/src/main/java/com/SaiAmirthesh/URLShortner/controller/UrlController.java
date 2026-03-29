@@ -16,6 +16,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*") // Added for local development
 public class UrlController {
 
     private final UrlService urlService;
@@ -130,8 +131,8 @@ public class UrlController {
     }
 
 
-
-
-
-
+    @GetMapping("/shorten/all")
+    public ResponseEntity<?> getAllUrls() {
+        return ResponseEntity.ok(urlService.getAllUrls());
+    }
 }
