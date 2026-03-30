@@ -11,4 +11,6 @@ public interface UrlRepository extends JpaRepository<UrlMapping,Long> {
     boolean existsByShortCode(String shortCode);
 
     void deleteByShortCode(String shortCode);
+
+    Optional<UrlMapping> findByUrl(String url);
 }

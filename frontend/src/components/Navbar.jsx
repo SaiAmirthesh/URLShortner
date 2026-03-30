@@ -8,7 +8,7 @@ const Navbar = () => {
     <div className='navbar'>
         <div className='logo'>
             <img src='https://cdn-icons-png.flaticon.com/512/3064/3064112.png' alt='logo' style={{filter:'grayscale(1) invert(1)'}}/>
-            <div className='title'>URLShortner</div>
+            <div className='title'>ShortSearch</div>
         </div>
         <div className='top-bar'>
             <Link to="/">Home</Link>

@@ -22,11 +22,17 @@ public class UrlService {
 
     @Transactional
     public UrlMapping createShortUrl(String originalUrl){
-        String shortcode = generateUniqueShortCode();
-        UrlMapping urlMapping = new UrlMapping();
-        urlMapping.setShortCode(shortcode);
-        urlMapping.setUrl(originalUrl);
-        return urlRepository.save(urlMapping);
+        Optional <UrlMapping> existing = urlRepository.findByUrl(originalUrl);
+        if(existing.isPresent()){
+            return existing.get();
+        }
+        else{
+            String shortcode = generateUniqueShortCode();
+            UrlMapping urlMapping = new UrlMapping();
+            urlMapping.setShortCode(shortcode);
+            urlMapping.setUrl(originalUrl);
+            return urlRepository.save(urlMapping);
+        }
     }
 
     private String generateUniqueShortCode(){
